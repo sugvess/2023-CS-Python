@@ -1,7 +1,8 @@
 from operator import add, mul, sub, truediv
-from typing import List, Optional, Union
 
 ops = {"+": add, "-": sub, "*": mul, "/": truediv}
+prioritet = {"+": 1, "-": 1, "*": 2, "/": 2}
+
 
 def prefix_evaluate(prefix_evaluation: str) -> int:
     if prefix_evaluation == "":
@@ -21,15 +22,32 @@ def prefix_evaluate(prefix_evaluation: str) -> int:
     return value_stack[0]
 
 
-def to_prefix(equation: str) -> List[str]:
+def to_prefix(equation: str) -> str:
     pass
     token_stack = []
     prefix_tokens = []
-    tokens = list(reversed(equation.split()))
-    while tokens:
-        token = tokens.pop()
+    for tocen in reversed(equation.split()):
+        if tocen not in ops:
+            if tocen != "(" and tocen != ")":
+                token_stack.append(tocen)
+            if tocen == "(":
+                while prefix_tokens and prefix_tokens[-1] != ")":
+                    token_stack.append(prefix_tokens.pop())
+                prefix_tokens.pop()
+            if tocen == ")":
+                prefix_tokens.append(tocen)
+        if tocen in ops:
+            while (
+                prefix_tokens
+                and prefix_tokens[-1] != ")"
+                and prioritet[tocen] <= prioritet.get(prefix_tokens[-1], 0)
+            ):
+                token_stack.append(prefix_tokens.pop())
+            prefix_tokens.append(tocen)
+    while prefix_tokens:
+        token_stack.append(prefix_tokens.pop())
 
-    return " ".join(prefix_tokens)
+    return " ".join(list(reversed(token_stack)))
 
 
 def calculate(equation: str) -> int:
