@@ -27,16 +27,10 @@ class Ocean:
                 else:
                     n_fish = 0
                     n_shrimp = 0
-                    neighbors = [
-                        (i - 1, j - 1),
-                        (i - 1, j),
-                        (i - 1, j + 1),
-                        (i, j - 1),
-                        (i, j + 1),
-                        (i + 1, j - 1),
-                        (i + 1, j),
-                        (i + 1, j + 1),
-                    ]
+                    neighbors = [(i - 1, j - 1), (i - 1, j),
+                                 (i - 1, j + 1), (i, j - 1),
+                                 (i, j + 1), (i + 1, j - 1),
+                                 (i + 1, j), (i + 1, j + 1)]
                     for ni, nj in neighbors:
                         if ni < 0 or nj < 0 or ni >= len(self.state) or nj >= len(self.state[i]):
                             continue
